@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * @author mnarusze
  */
 public class AnswerTemperatureRequestBehaviour extends CyclicBehaviour {
-
+    
     @Override
     public void action() {
         ACLMessage msg = myAgent.receive(MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
@@ -29,12 +29,13 @@ public class AnswerTemperatureRequestBehaviour extends CyclicBehaviour {
             response.setRegion(((WeatherReporterAgent) myAgent).getRegionID());
             response.setTemperature(((WeatherReporterAgent) myAgent).getActualTemp());
             try {
+                System.out.println(myAgent.getName() + " is asked to send temperature");
                 reply.setContentObject(response);
                 myAgent.send(reply);
+                System.out.println(myAgent.getName() + " sent temperature");
             } catch (IOException ex) {
                 Logger.getLogger(AnswerTemperatureRequestBehaviour.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        block();
     }
 }

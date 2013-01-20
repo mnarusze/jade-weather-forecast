@@ -25,7 +25,9 @@ import java.util.logging.Logger;
 public class WeatherCentralAgent extends Agent {
 
     public HashMap<AID, WeatherResponse> RegionTemperatures;
-
+    private int responseCounter;
+    private int responseLimit;
+    
     @Override
     protected void setup() {
         RegionTemperatures = new HashMap<AID, WeatherResponse>();
@@ -46,15 +48,35 @@ public class WeatherCentralAgent extends Agent {
 
                             if (response != null) {
                                 ((WeatherCentralAgent) myAgent).RegionTemperatures.put(message.getSender(), response);
-                                System.out.println("Received temperature from " + message.getSender().getLocalName() + " - regon " + response.getRegion() + " temperature " + response.getTemperature());
+                                responseCounter++;
+                                if (responseCounter >= responseLimit) {
+                                    myAgent.addBehaviour(new CalculateTemperatureBehaviour());
+                                    responseCounter = 0;
+                                    responseLimit = 0;
+                                }
                             }
                         }
                     } catch (UnreadableException ex) {
                         Logger.getLogger(WeatherCentralAgent.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    block();
                 }
             }
         });
+    }
+
+    public int getResponseCounter() {
+        return responseCounter;
+    }
+
+    public void setResponseCounter(int responseCounter) {
+        this.responseCounter = responseCounter;
+    }
+
+    public int getResponseLimit() {
+        return responseLimit;
+    }
+
+    public void setResponseLimit(int responseLimit) {
+        this.responseLimit = responseLimit;
     }
 }

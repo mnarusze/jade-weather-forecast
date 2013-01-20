@@ -12,6 +12,8 @@ import java.util.HashMap;
 
 public class CalculateTemperatureBehaviour extends SimpleBehaviour {
 
+    private boolean finished = false;
+    
     @Override
     public void action() {
         HashMap<Integer, ArrayList<Float>> WeatherConditions = new HashMap<Integer, ArrayList<Float>>();
@@ -38,11 +40,12 @@ public class CalculateTemperatureBehaviour extends SimpleBehaviour {
                 System.out.println("  " + counter + " : " + WeatherConditions.get(region).get(counter));
             }
             System.out.println("  Average : " + (average / counter));
+            finished = true;
         }
     }
 
     @Override
     public boolean done() {
-        return true;
+        return finished;
     }
 }
