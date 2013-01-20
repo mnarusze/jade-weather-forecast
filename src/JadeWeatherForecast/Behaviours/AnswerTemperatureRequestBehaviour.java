@@ -29,7 +29,6 @@ public class AnswerTemperatureRequestBehaviour extends CyclicBehaviour {
             response.setRegion(((WeatherReporterAgent) myAgent).getRegionID());
             response.setTemperature(((WeatherReporterAgent) myAgent).getActualTemp());
             try {
-                System.out.println(myAgent.getName() + " is asked to send temperature");
                 reply.setContentObject(response);
                 myAgent.send(reply);
                 System.out.println(myAgent.getName() + " sent temperature");
